@@ -38,8 +38,7 @@
   function stop() { if (timer) clearInterval(timer); timer = null; }
   function setPaused(p) {
     paused = p;
-    pause.setAttribute("aria-pressed", String(p));
-    pause.setAttribute("aria-label", p ? "Play slideshow" : "Pause slideshow");
+    pause.setAttribute("aria-label", p ? pause.dataset.play : pause.dataset.pause);
     pause.textContent = p ? "▶" : "❚❚";
     if (p) stop(); else start();
   }

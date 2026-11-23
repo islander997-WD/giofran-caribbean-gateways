@@ -3,11 +3,11 @@
   --surface: #ffffff;
   --band: #eef2ec;
   --ink: #1f2a24;
-  --muted: #5b665f;
+  --muted: #3d4741;
   --line: #e2ddd3;
-  --green: #2f5d46;
+  --green: #1f4232;
   --green-dark: #23473500;
-  --accent: #c4552f;
+  --accent: #b04824;
   --accent-ink: #ffffff;
   --gold: #b9811a;
   --sea: #2b7a8c;
@@ -21,7 +21,8 @@
 }
 
 *, *::before, *::after { box-sizing: border-box; }
-html { scroll-behavior: smooth; scroll-padding-top: 84px; }
+html { scroll-behavior: smooth; scroll-padding-top: 84px; scroll-padding-bottom: 24px; }
+main:focus { outline: none; }
 body { margin: 0; background: var(--bg); color: var(--ink); font: 16px/1.6 var(--sans); -webkit-font-smoothing: antialiased; }
 img { max-width: 100%; display: block; }
 a { color: var(--green); text-underline-offset: 3px; }
@@ -41,17 +42,18 @@ p { text-wrap: pretty; }
 .skip { position: absolute; left: -999px; top: 8px; background: var(--ink); color: #fff; padding: 8px 14px; z-index: 50; }
 .skip:focus { left: 8px; }
 
-/* beach backdrop: fixed behind everything, faint, never takes clicks */
+/* beach backdrop: fixed behind everything, never takes clicks. Opacities are capped so the
+   darkest stack (three waves + palm) keeps --muted text at 5.1:1 and --ink at 7.9:1 (WCAG AA). */
 .beach { position: fixed; left: 0; right: 0; bottom: 0; height: 240px; z-index: -1; pointer-events: none; overflow: hidden; color: var(--sea); }
 .beach svg { position: absolute; bottom: 0; fill: currentColor; }
 .beach-sun { left: 8%; bottom: 70px; width: 120px; height: 120px; color: var(--sun); opacity: .16; }
-.beach-palms { right: 0; width: min(900px, 90vw); height: 230px; color: var(--palm); opacity: .22; }
+.beach-palms { right: 0; width: min(900px, 90vw); height: 230px; color: var(--palm); opacity: .12; }
 .palm { transform-box: fill-box; transform-origin: 50% 100%; animation: sway 7s ease-in-out infinite alternate; }
 .palm-b { animation-duration: 9s; animation-delay: -3s; }
 .wave { left: 0; width: 200%; animation: tide linear infinite; }
-.wave-3 { height: 90px; bottom: 34px; opacity: .22; animation-duration: 38s; }
-.wave-2 { height: 80px; bottom: 18px; opacity: .3; animation-duration: 26s; animation-direction: reverse; }
-.wave-1 { height: 64px; bottom: 6px; opacity: .4; animation-duration: 18s; }
+.wave-3 { height: 90px; bottom: 34px; opacity: .09; animation-duration: 38s; }
+.wave-2 { height: 80px; bottom: 18px; opacity: .12; animation-duration: 26s; animation-direction: reverse; }
+.wave-1 { height: 64px; bottom: 6px; opacity: .16; animation-duration: 18s; }
 .sand { position: absolute; left: 0; right: 0; bottom: 0; height: 14px; background: var(--sand); opacity: .5; }
 @keyframes tide { from { transform: translateX(0); } to { transform: translateX(-50%); } }
 @keyframes sway { from { transform: rotate(-2deg); } to { transform: rotate(2.5deg); } }
@@ -61,7 +63,9 @@ p { text-wrap: pretty; }
 .header-row { display: flex; align-items: center; justify-content: space-between; gap: 16px; min-height: 64px; flex-wrap: wrap; }
 .brand { font-family: var(--serif); font-size: 1.35rem; font-weight: 600; color: var(--ink); text-decoration: none; line-height: 1.1; }
 .brand span { display: block; font: 500 .75rem/1.4 var(--sans); color: var(--muted); letter-spacing: .02em; }
-.site-header nav { display: flex; gap: 4px; }
+.site-header nav { display: flex; gap: 4px; flex-wrap: wrap; }
+.lang-switch { display: inline-flex; align-items: center; min-height: 40px; padding: 0 14px; border: 2px solid var(--green); border-radius: 999px; color: var(--green); font-weight: 600; font-size: .9rem; text-decoration: none; white-space: nowrap; }
+.lang-switch:hover { background: var(--green); color: #fff; }
 .site-header nav a { color: var(--ink); text-decoration: none; font-weight: 500; font-size: .95rem; padding: 10px 12px; border-radius: 999px; }
 .site-header nav a:hover { background: var(--band); color: var(--ink); }
 @media (max-width: 560px) { .site-header { position: static; } .brand span { display: none; } .site-header nav a { padding: 10px 8px; font-size: .9rem; } }
@@ -70,7 +74,7 @@ p { text-wrap: pretty; }
 
 /* buttons */
 .btn { display: inline-flex; align-items: center; justify-content: center; min-height: 48px; padding: 0 22px; border-radius: 999px; background: var(--accent); color: var(--accent-ink); font-weight: 600; text-decoration: none; transition: transform .15s ease, background-color .15s ease; }
-.btn:hover { background: #a8452a; color: #fff; }
+.btn:hover { background: #8f3a1d; color: #fff; }
 .btn:active { transform: scale(.97); }
 .btn.block { display: flex; width: 100%; }
 
@@ -81,12 +85,12 @@ p { text-wrap: pretty; }
 .hero-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity 1.4s ease; }
 .hero-img.is-active { opacity: 1; }
 .hero-caption { position: absolute; right: 16px; bottom: 16px; z-index: 2; display: flex; align-items: center; gap: 8px; }
-.slide-link { color: #fff; background: rgba(12,22,16,.55); font-size: .85rem; font-weight: 500; padding: 8px 14px; border-radius: 999px; text-decoration: none; backdrop-filter: blur(4px); }
+.slide-link { color: #fff; background: rgba(12,22,16,.78); font-size: .85rem; font-weight: 500; padding: 8px 14px; border-radius: 999px; text-decoration: none; backdrop-filter: blur(4px); }
 .slide-link:hover { color: #fff; background: rgba(12,22,16,.75); }
-.slide-pause { width: 40px; height: 40px; border: 0; border-radius: 50%; background: rgba(12,22,16,.55); color: #fff; font-size: .8rem; cursor: pointer; }
+.slide-pause { width: 44px; height: 44px; border: 0; border-radius: 50%; background: rgba(12,22,16,.78); color: #fff; font-size: .8rem; cursor: pointer; }
 .slide-pause:hover { background: rgba(12,22,16,.75); }
 @media (max-width: 700px) { .hero-caption { left: 16px; right: auto; top: 16px; bottom: auto; } }
-.hero-shade { position: absolute; inset: 0; background: linear-gradient(to top, rgba(12,22,16,.8) 0%, rgba(12,22,16,.35) 50%, rgba(12,22,16,.1) 80%), linear-gradient(to right, rgba(12,22,16,.55) 0%, rgba(12,22,16,0) 65%); }
+.hero-shade { position: absolute; inset: 0; background: linear-gradient(to top, rgba(12,22,16,.85) 0%, rgba(12,22,16,.55) 55%, rgba(12,22,16,.3) 100%), linear-gradient(to right, rgba(12,22,16,.6) 0%, rgba(12,22,16,.15) 70%); }
 .hero h1, .hero p { text-shadow: 0 1px 12px rgba(0,0,0,.35); }
 .hero-text { position: relative; padding-top: 120px; padding-bottom: 56px; width: 100%; }
 .hero h1 { font-size: clamp(2rem, 5vw, 3.6rem); max-width: 16ch; margin-bottom: .4em; }
@@ -162,7 +166,7 @@ p { text-wrap: pretty; }
 .desc ul { padding-left: 1.1rem; margin: 0; }
 .desc li { margin: .2rem 0; }
 .amenities { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 4px 28px; }
-.amenities h4 { margin: .8rem 0 .3rem; }
+.amenities h3, .rules h3 { font-family: var(--sans); font-size: .95rem; font-weight: 600; margin: .8rem 0 .3rem; }
 .amenities ul, .rules ul { padding-left: 1.1rem; margin: 0; }
 .amenities li, .rules li { margin: .15rem 0; }
 .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 0 32px; }
@@ -175,6 +179,8 @@ p { text-wrap: pretty; }
 .bar { height: 5px; background: var(--line); border-radius: 3px; overflow: hidden; }
 .bar i { display: block; height: 100%; background: var(--green); }
 .mentions { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; color: var(--muted); font-size: .9rem; margin-bottom: 20px; }
+.mentions p { margin: 0; }
+.mentions ul { display: contents; list-style: none; }
 .chip { background: var(--band); color: var(--ink); padding: 3px 10px; border-radius: 999px; }
 .book-card { position: sticky; top: 96px; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow); padding: 24px; }
 .book-card .btn { margin: 16px 0 10px; }
@@ -201,4 +207,10 @@ p { text-wrap: pretty; }
   html { scroll-behavior: auto; }
   .wave, .palm { animation: none; }
   *, *::before, *::after { transition: none !important; }
+}
+
+/* Phones: hero text runs full width, so shade the whole photo evenly (white text stays above 4.5:1). */
+@media (max-width: 700px) {
+  .hero-shade { background: linear-gradient(to top, rgba(12,22,16,.88) 0%, rgba(12,22,16,.68) 60%, rgba(12,22,16,.45) 100%); }
+  .header-row { gap: 8px 16px; padding-top: 8px; padding-bottom: 8px; }
 }
