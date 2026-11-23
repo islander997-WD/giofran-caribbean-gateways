@@ -97,3 +97,36 @@
     startX = null;
   });
 })();
+
+// Home page map of the three areas. The list beside it carries the same information.
+(function () {
+  var el = document.getElementById("area-map");
+  var data = document.getElementById("map-data");
+  if (!el || !data || !window.L) return;
+  var pins = JSON.parse(data.textContent);
+  var reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  L.Icon.Default.imagePath = "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/";
+  var map = L.map(el, {
+    scrollWheelZoom: false,
+    zoomAnimation: !reduced, fadeAnimation: !reduced, markerZoomAnimation: !reduced
+  });
+  L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
+    maxZoom: 17,
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+  }).addTo(map);
+  var bounds = [];
+  pins.forEach(function (p) {
+    var popup = document.createElement("div");
+    var name = document.createElement("strong");
+    name.textContent = p.name;
+    var town = document.createElement("p");
+    town.textContent = p.town;
+    var link = document.createElement("a");
+    link.href = p.href;
+    link.textContent = p.link;
+    popup.append(name, town, link);
+    L.marker([p.lat, p.lng], { title: p.name, alt: p.name, keyboard: true }).addTo(map).bindPopup(popup);
+    bounds.push([p.lat, p.lng]);
+  });
+  map.fitBounds(bounds, { padding: [60, 60], maxZoom: 13 });
+})();

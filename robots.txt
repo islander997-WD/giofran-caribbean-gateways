@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://islander997-wd.github.io/giofran-caribbean-gateways/sitemap.xml
